@@ -34,16 +34,17 @@ public class NPCCharacter : MonoBehaviour
     [SerializeField] private Sprite _workerSpriteAttack;
 
     public Vector3 Destination => agent.destination;
-    public bool AtDestination => Vector3.Distance(transform.position, agent.destination) <= 0.3f;
+    public bool AtDestination => Vector3.Distance(transform.position, agent.destination) <= 0.2f;
+    public bool AtFollowDestination => Vector3.Distance(transform.position, followTarget.position) <= 1f;
 
     protected Transform followTarget;
-    protected NPCCharacter attackTarget;
+    public NPCCharacter attackTarget;
 
     float healthBarXLeft, healthBarXRight;
 
-    bool IsMelee => _attackRange <= _attackMeleeMaxRange;
-    bool IsRanged => _attackRange > _attackMeleeMaxRange;
-    bool IsWorker => _attackRange <= 0;
+    public bool IsMelee;
+    public bool IsRanged;
+    public bool IsWorker;
 
     public void Damage(float damage, NPCCharacter source, CharacterTeam sourceTeam)
     {
@@ -53,13 +54,32 @@ public class NPCCharacter : MonoBehaviour
             List<NPCCharacter> possibleTargets = new List<NPCCharacter>();
             foreach (Collider hitCollider in hitColliders)
             {
-                NPCEnemyController mouse = hitCollider.GetComponentInChildren<NPCEnemyController>();
-                if (mouse)
+                NPCCharacter mouse = hitCollider.GetComponentInChildren<NPCCharacter>();
+                if (mouse && mouse.GetComponent<TeamSelector>().CharacterTeam == GetComponent<TeamSelector>().CharacterTeam)
                 {
-                    possibleTargets.Add(mouse);
+                    if (!mouse.attackTarget)
+                    {
+                        StartCoroutine(CoroutineHelper.DelayOneFixedFrame(() =>
+                        {
+                            if (!mouse.attackTarget)
+                            {
+                                mouse.SetAttackTarget(source);
+                            }
+                        }));
+                    }
                 }
             }
 
+            if (!attackTarget)
+            {
+                StartCoroutine(CoroutineHelper.DelayOneFixedFrame(() =>
+                {
+                    if (!attackTarget)
+                    {
+                        SetAttackTarget(source);
+                    }
+                }));
+            }
         }
 
         HealthBar.enabled = true;
@@ -135,7 +155,11 @@ public class NPCCharacter : MonoBehaviour
         }
         else if (followTarget)
         {
-            if (agent.destination != followTarget.transform.position)
+            if (AtFollowDestination)
+            {
+                agent.destination = transform.position;
+            }
+            else if (agent.destination != followTarget.transform.position)
             {
                 agent.destination = followTarget.transform.position;
             }
@@ -233,9 +257,6 @@ public class NPCCharacter : MonoBehaviour
     }
     public void SetAttackTarget(NPCCharacter target)
     {
-        if (!IsWorker)
-        {
-            attackTarget = target;
-        }
+        attackTarget = target;
     }
 }

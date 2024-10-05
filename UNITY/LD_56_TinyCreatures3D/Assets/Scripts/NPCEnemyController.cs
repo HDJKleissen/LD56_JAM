@@ -21,12 +21,25 @@ public class NPCEnemyController : NPCCharacter
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _targetDetectRange);
         List<NPCCharacter> possibleTargets = new List<NPCCharacter>();
+
+        NPCMouseController closest = null;
         foreach (Collider hitCollider in hitColliders)
         {
-            NPCMouseController mouse = hitCollider.GetComponentInChildren<NPCMouseController>();
-            if (mouse)
+            NPCMouseController enemy = hitCollider.GetComponentInChildren<NPCMouseController>();
+            if (enemy)
             {
-                possibleTargets.Add(mouse);
+                if (!closest)
+                {
+                    closest = enemy;
+                }
+                else
+                {
+                    if (Vector3.Distance(transform.position, enemy.transform.position) < Vector3.Distance(transform.position, closest.transform.position))
+                    {
+                        closest = enemy;
+                    }
+                }
+                possibleTargets.Add(enemy);
             }
         }
 
@@ -38,7 +51,8 @@ public class NPCEnemyController : NPCCharacter
 
         if (possibleTargets.Count > 0 && atLeastOneTargetInRange)
         {
-            SetAttackTarget(possibleTargets[Random.Range(0, possibleTargets.Count)]);
+            SetAttackTarget(closest);
+            //SetAttackTarget(possibleTargets[Random.Range(0, possibleTargets.Count)]);
             //SetAttackTarget(possibleTargets[0]);
         }
     }

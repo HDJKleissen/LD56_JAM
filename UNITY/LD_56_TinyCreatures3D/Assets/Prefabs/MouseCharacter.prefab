@@ -294,8 +294,8 @@ MonoBehaviour:
   _attackRange: 5
   _attackMeleeMaxRange: 1
   _attackCooldown: 2
-  _targetChooseRange: 4
-  _targetDetectRange: 5
+  _targetChooseRange: 8
+  _targetDetectRange: 10
   _throwRotateIntensity: 20
   _throwRotateDuration: 0.2
   _attackDamage: 1
@@ -314,6 +314,9 @@ MonoBehaviour:
     type: 3}
   _workerSpriteAttack: {fileID: 728605609, guid: 86e19c04ae018f14080c09de86f6e616,
     type: 3}
+  IsMelee: 0
+  IsRanged: 0
+  IsWorker: 0
   _selectedIndicator: {fileID: 71272886205221903}
 --- !u!195 &1052502338420481473
 NavMeshAgent:
