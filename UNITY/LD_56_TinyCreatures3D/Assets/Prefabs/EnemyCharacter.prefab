@@ -15,9 +15,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
         type: 3}
+      propertyPath: m_Size.x
+      value: 4.410563
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 3.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
+        type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 86e19c04ae018f14080c09de86f6e616,
+      objectReference: {fileID: 1324015985, guid: 86e19c04ae018f14080c09de86f6e616,
         type: 3}
     - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
         type: 3}
@@ -32,6 +42,11 @@ PrefabInstance:
     - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
         type: 3}
       propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2396456815330621087, guid: a65f7d277c87e454c8c5c53da6a19ff4,
@@ -127,6 +142,18 @@ SpriteRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 1774837836068162371}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1201692520633183639 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 579901539948275412, guid: a65f7d277c87e454c8c5c53da6a19ff4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1774837836068162371}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad38a8f0c6def84899724d5320b316a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8836547846880932563 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7061860721240357264, guid: a65f7d277c87e454c8c5c53da6a19ff4,
@@ -143,7 +170,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.2
-  m_Speed: 5
+  m_Speed: 8
   m_Acceleration: 500
   avoidancePriority: 50
   m_AngularSpeed: 0
@@ -190,6 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef0ae9f4f9e1f964f8e887e5a9cdc468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxHealth: 5
+  Health: 0
+  HealthBar: {fileID: 1201692520633183639}
   _attackRange: 1
   _attackMeleeMaxRange: 1
   _attackCooldown: 2
@@ -197,7 +227,19 @@ MonoBehaviour:
   _targetDetectRange: 5
   _throwRotateIntensity: 20
   _throwRotateDuration: 0.5
+  _attackDamage: 1
   agent: {fileID: 2037757270264141284}
   _sprite: {fileID: 330473233013729504}
   projectilePrefab: {fileID: 1204828313419105331, guid: 43b8243f4cfbb3f4fb97c4b65b17c8b7,
+    type: 3}
+  _meleeSpriteIdle: {fileID: 1324015985, guid: 86e19c04ae018f14080c09de86f6e616, type: 3}
+  _meleeSpriteAttack: {fileID: -59899263, guid: 86e19c04ae018f14080c09de86f6e616,
+    type: 3}
+  _rangedSpriteIdle: {fileID: -2048510998, guid: 86e19c04ae018f14080c09de86f6e616,
+    type: 3}
+  _rangedSpriteAttack: {fileID: 621659060, guid: 86e19c04ae018f14080c09de86f6e616,
+    type: 3}
+  _workerSpriteIdle: {fileID: -1218644027, guid: 86e19c04ae018f14080c09de86f6e616,
+    type: 3}
+  _workerSpriteAttack: {fileID: 728605609, guid: 86e19c04ae018f14080c09de86f6e616,
     type: 3}

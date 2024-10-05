@@ -6,11 +6,6 @@ using UnityEngine.AI;
 
 public class NPCEnemyController : NPCCharacter
 {
-    private void Start()
-    {
-        NPCManager.RegisterNPC(this);
-    }
-
     private void OnTriggerStay(Collider collider)
     {
         Debug.Log($"Bing bong {name}?");
@@ -22,7 +17,7 @@ public class NPCEnemyController : NPCCharacter
         }
     }
 
-    protected override void ChooseTarget()
+    protected override void ChooseAttackTarget()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _targetDetectRange);
         List<NPCCharacter> possibleTargets = new List<NPCCharacter>();
@@ -44,7 +39,7 @@ public class NPCEnemyController : NPCCharacter
         if (possibleTargets.Count > 0 && atLeastOneTargetInRange)
         {
             //target = possibleTargets[Random.Range(0, possibleTargets.Count)];
-            target = possibleTargets[0];
+            SetAttackTarget(possibleTargets[0]);
         }
     }
 }

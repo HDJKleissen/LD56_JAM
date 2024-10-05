@@ -11,7 +11,7 @@ public class SelectionCircle : MonoBehaviour
     [SerializeField] private float _maxRadius;
     [SerializeField] private float _shrinkDuration;
     [SerializeField] private LayerMask _groundMask;
-
+    [SerializeField] private PlayerMovement _player;
     Tween shrinkTween;
     float radius;
 
@@ -65,32 +65,19 @@ public class SelectionCircle : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            for (int i = 0; i < selectedMice.Count; i++)
+            {
+                NPCMouseController mouse = selectedMice[i];
+                if (mouse == null)
+                {
+                    continue;
+                }
+                _player.AddFollower(mouse);
+            }
+            ClearMouseList();
             EndSelection();
         }
 
-        if (Input.GetMouseButtonUp(1))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            Vector3 clickLocation;
-
-            if (Physics.Raycast(ray, out RaycastHit hitData, float.PositiveInfinity, _groundMask))
-            {
-                clickLocation = hitData.point;
-
-                Vector2[] locationInCircle = Sunflower(selectedMice.Count);
-
-                for(int i = 0; i < selectedMice.Count; i++)
-                {
-                    NPCMouseController mouse = selectedMice[i];
-                    if(mouse == null)
-                    {
-                        continue;
-                    }
-                    mouse.SetDestination(clickLocation + new Vector3(locationInCircle[i].x, 0, locationInCircle[i].y) * Mathf.Min(selectedMice.Count / (Mathf.PI * 2), 2));
-                }
-            }
-        }
     }
 
     private void SelectMouse(NPCMouseController mouse)
@@ -139,28 +126,5 @@ public class SelectionCircle : MonoBehaviour
         }
         _baseRing.Radius = radius;
         transform.up = hit.normal;
-    }
-
-    Vector2[] Sunflower(int n, float alpha = 0, bool geodesic = false)
-    {
-        float phi = (1 + Mathf.Sqrt(5)) / 2;//golden ratio
-        float angle_stride = 360 * phi;
-        float radius(float k, float n, float b)
-        {
-            return k > n - b ? 1 : Mathf.Sqrt(k - 0.5f) / Mathf.Sqrt(n - (b + 1) / 2);
-        }
-
-        int b = (int)(alpha * Mathf.Sqrt(n));  //# number of boundary points
-
-        List<Vector2> points = new List<Vector2>();
-        for (int k = 0; k < n; k++)
-        {
-            float r = radius(k, n, b);
-            float theta = geodesic ? k * 360 * phi : k * angle_stride;
-            float x = !float.IsNaN(r * Mathf.Cos(theta)) ? r * Mathf.Cos(theta) : 0;
-            float y = !float.IsNaN(r * Mathf.Sin(theta)) ? r * Mathf.Sin(theta) : 0;
-            points.Add(new Vector2(x, y));
-        }
-        return points.ToArray();
     }
 }
