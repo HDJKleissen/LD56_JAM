@@ -38,8 +38,8 @@ public class NPCEnemyController : NPCCharacter
 
         if (possibleTargets.Count > 0 && atLeastOneTargetInRange)
         {
-            //target = possibleTargets[Random.Range(0, possibleTargets.Count)];
-            SetAttackTarget(possibleTargets[0]);
+            SetAttackTarget(possibleTargets[Random.Range(0, possibleTargets.Count)]);
+            //SetAttackTarget(possibleTargets[0]);
         }
     }
 }
