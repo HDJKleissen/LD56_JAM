@@ -6,10 +6,12 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
     public Rigidbody Rigidbody;
+    public SpriteRenderer Sprite;
     public float MoveSpeed;
     public float GravityValue;
 
     private Vector3 playerVelocity;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+
+        if(move.x < 0)
+        {
+            Sprite.flipX = true;
+        }
+        else if (move.x > 0)
+        {
+            Sprite.flipX = false;
+        }
+
         controller.Move(move * Time.deltaTime * MoveSpeed);
 
         playerVelocity.y += GravityValue * Time.deltaTime;
