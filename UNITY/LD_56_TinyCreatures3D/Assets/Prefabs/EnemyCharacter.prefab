@@ -191,8 +191,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackRange: 1
+  _attackMeleeMaxRange: 1
   _attackCooldown: 2
   _targetChooseRange: 4
   _targetDetectRange: 5
+  _throwRotateIntensity: 20
+  _throwRotateDuration: 0.5
   agent: {fileID: 2037757270264141284}
   _sprite: {fileID: 330473233013729504}
+  projectilePrefab: {fileID: 1204828313419105331, guid: 43b8243f4cfbb3f4fb97c4b65b17c8b7,
+    type: 3}

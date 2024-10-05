@@ -7,7 +7,6 @@ using DG.Tweening;
 public class SelectionCircle : MonoBehaviour
 {
     [SerializeField] private Disc _baseRing;
-    [SerializeField] private Disc _timeRing;
     [SerializeField] private float _growSpeed;
     [SerializeField] private float _maxRadius;
     [SerializeField] private float _shrinkDuration;
@@ -22,7 +21,6 @@ public class SelectionCircle : MonoBehaviour
     void Start()
     {
         _baseRing.enabled = false;
-        _timeRing.enabled = false;
     }
 
     private void OnDrawGizmos()
@@ -46,7 +44,6 @@ public class SelectionCircle : MonoBehaviour
             if (!_baseRing.enabled)
             {
                 _baseRing.enabled = true;
-                _timeRing.enabled = true;
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -86,6 +83,10 @@ public class SelectionCircle : MonoBehaviour
                 for(int i = 0; i < selectedMice.Count; i++)
                 {
                     NPCMouseController mouse = selectedMice[i];
+                    if(mouse == null)
+                    {
+                        continue;
+                    }
                     mouse.SetDestination(clickLocation + new Vector3(locationInCircle[i].x, 0, locationInCircle[i].y) * Mathf.Min(selectedMice.Count / (Mathf.PI * 2), 2));
                 }
             }
@@ -102,7 +103,10 @@ public class SelectionCircle : MonoBehaviour
     {
         foreach (NPCMouseController mouse in selectedMice)
         {
-            mouse.SetSelected(false);
+            if (mouse)
+            {
+                mouse.SetSelected(false);
+            }
         }
         selectedMice.Clear();
     }
@@ -114,13 +118,11 @@ public class SelectionCircle : MonoBehaviour
             val =>
             {
                 _baseRing.Radius = val;
-                _timeRing.Radius = val;
             },
             0,
             _shrinkDuration).OnComplete(() =>
             {
                 _baseRing.enabled = false;
-                _timeRing.enabled = false;
                 radius = 0;
             });
     }
@@ -130,17 +132,12 @@ public class SelectionCircle : MonoBehaviour
         Vector3 position = hit.point;
         
         _baseRing.transform.position = position + new Vector3(0, 0.01f, 0);
-        _timeRing.transform.position = position + new Vector3(0, 0.02f, 0);
 
         if (radius < _maxRadius)
         {
             radius += _growSpeed * Time.deltaTime;
         }
         _baseRing.Radius = radius;
-        _timeRing.Radius = radius;
-
-        _timeRing.AngRadiansEnd = (radius / _maxRadius) * 2 * Mathf.PI;
-
         transform.up = hit.normal;
     }
 
