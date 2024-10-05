@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-    public Rigidbody Rigidbody;
     public SpriteRenderer Sprite;
     public float MoveSpeed;
 

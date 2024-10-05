@@ -17,6 +17,8 @@ public class SelectionCircle : MonoBehaviour
     float radius;
     float time;
 
+    List<NPCMouseMovement> selectedMice = new List<NPCMouseMovement>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +26,22 @@ public class SelectionCircle : MonoBehaviour
         _timeRing.enabled = false;
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(_baseRing.transform.position, radius);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (selectedMice.Count > 0)
+            {
+                ClearMouseList();
+            }
+        }
+
         if (Input.GetMouseButton(0) && (shrinkTween == null || !shrinkTween.IsPlaying()))
         {
             if (!_baseRing.enabled)
@@ -36,9 +51,19 @@ public class SelectionCircle : MonoBehaviour
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out RaycastHit hitData, _groundMask))
+            if (Physics.Raycast(ray, out RaycastHit hitData, float.PositiveInfinity, _groundMask))
             {
-                UpdateRings(hitData.point);
+                UpdateRings(hitData);
+                Collider[] hitColliders = Physics.OverlapSphere(_baseRing.transform.position, radius);
+                ClearMouseList();
+                foreach (Collider hitCollider in hitColliders)
+                {
+                    NPCMouseMovement mouse = hitCollider.GetComponentInChildren<NPCMouseMovement>();
+                    if (mouse)
+                    {
+                        SelectMouse(mouse);
+                    }
+                }
             }
 
             if (time > _maxTime)
@@ -51,6 +76,37 @@ public class SelectionCircle : MonoBehaviour
         {
             EndSelection();
         }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            Vector3 clickLocation;
+
+            if (Physics.Raycast(ray, out RaycastHit hitData, float.PositiveInfinity, _groundMask))
+            {
+                clickLocation = hitData.point;
+                foreach (NPCMouseMovement mouse in selectedMice)
+                {
+                    mouse.SetDestination(clickLocation);
+                }
+            }
+        }
+    }
+
+    private void SelectMouse(NPCMouseMovement mouse)
+    {
+        mouse.SetSelected(true);
+        selectedMice.Add(mouse);
+    }
+
+    private void ClearMouseList()
+    {
+        foreach (NPCMouseMovement mouse in selectedMice)
+        {
+            mouse.SetSelected(false);
+        }
+        selectedMice.Clear();
     }
 
     private void EndSelection()
@@ -72,8 +128,10 @@ public class SelectionCircle : MonoBehaviour
             });
     }
 
-    private void UpdateRings(Vector3 position)
+    private void UpdateRings(RaycastHit hit)
     {
+        Vector3 position = hit.point;
+
         time += Time.deltaTime;
 
         _baseRing.transform.position = position + new Vector3(0, 0.01f, 0);
@@ -84,5 +142,9 @@ public class SelectionCircle : MonoBehaviour
         _timeRing.Radius = radius;
 
         _timeRing.AngRadiansEnd = (time / _maxTime) * 2 * Mathf.PI;
+
+
+
+        transform.up = hit.normal;
     }
 }
