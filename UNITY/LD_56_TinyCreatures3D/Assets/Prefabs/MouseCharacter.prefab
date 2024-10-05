@@ -233,6 +233,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2657949813833127443}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &4095321795959993776 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2657949813833127443}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5107692949060611971 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7061860721240357264, guid: a65f7d277c87e454c8c5c53da6a19ff4,
@@ -253,6 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 1052502338420481473}
   _controller: {fileID: 0}
+  _sprite: {fileID: 4095321795959993776}
   _selectedIndicator: {fileID: 71272886205221903}
   _moveSpeed: 5
 --- !u!195 &1052502338420481473
