@@ -228,8 +228,11 @@ MonoBehaviour:
   _throwRotateIntensity: 20
   _throwRotateDuration: 0.5
   _attackDamage: 1
+  _mineStrength: 0
+  _mineTime: 0
   agent: {fileID: 2037757270264141284}
   _sprite: {fileID: 330473233013729504}
+  _carryingSprite: {fileID: 0}
   projectilePrefab: {fileID: 1204828313419105331, guid: 43b8243f4cfbb3f4fb97c4b65b17c8b7,
     type: 3}
   _meleeSpriteIdle: {fileID: 1324015985, guid: 86e19c04ae018f14080c09de86f6e616, type: 3}
@@ -243,3 +246,8 @@ MonoBehaviour:
     type: 3}
   _workerSpriteAttack: {fileID: 728605609, guid: 86e19c04ae018f14080c09de86f6e616,
     type: 3}
+  attackTarget: {fileID: 0}
+  resourceTarget: {fileID: 0}
+  IsMelee: 0
+  IsRanged: 0
+  IsWorker: 0

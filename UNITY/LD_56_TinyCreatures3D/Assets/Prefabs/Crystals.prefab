@@ -188,8 +188,40 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 4344843753488884522}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 427937040850989102, guid: f5555400968768947bce0f36619133ee,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2814908467040106571}
   m_SourcePrefab: {fileID: 100100000, guid: f5555400968768947bce0f36619133ee, type: 3}
+--- !u!1 &4587428801825882741 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 427937040850989102, guid: f5555400968768947bce0f36619133ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 4204537172153201243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2814908467040106571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4587428801825882741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ec911cbb2ee6b4aad1d9155d6f12b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Group: {fileID: 0}
+  Type: 1
+  StartingAmount: 1000
+  Amount: 1000
+  MiceMiningAmount: 0
+  ChunkSprites:
+  - {fileID: 1777938722, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
+  - {fileID: 178143016, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
+  - {fileID: 363117434, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
+  - {fileID: 1331738598, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
 --- !u!4 &6405408640350092814 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7114862161571417173, guid: f5555400968768947bce0f36619133ee,

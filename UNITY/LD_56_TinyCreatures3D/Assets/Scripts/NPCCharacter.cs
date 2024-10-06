@@ -20,9 +20,12 @@ public class NPCCharacter : MonoBehaviour
     [SerializeField] protected float _throwRotateIntensity;
     [SerializeField] protected float _throwRotateDuration;
     [SerializeField] protected float _attackDamage;
+    [SerializeField] protected int _mineStrength;
+    [SerializeField] protected float _mineTime;
 
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected SpriteRenderer _sprite;
+    [SerializeField] protected SpriteRenderer _carryingSprite;
 
     [SerializeField] private GameObject projectilePrefab;
 
@@ -36,9 +39,14 @@ public class NPCCharacter : MonoBehaviour
     public Vector3 Destination => agent.destination;
     public bool AtDestination => Vector3.Distance(transform.position, agent.destination) <= 0.2f;
     public bool AtFollowDestination => Vector3.Distance(transform.position, followTarget.position) <= 1f;
+    public bool AtResourceDestination => Vector3.Distance(transform.position, resourceTarget.transform.position) <= 1f;
+    public bool AtTownHallDestination => Vector3.Distance(transform.position, townHallTarget.transform.position) <= 1f;
 
     protected Transform followTarget;
     public NPCCharacter attackTarget;
+    [SerializeField] private Resource resourceTarget;
+    private ResourceGroup resourceGroupTarget;
+    private TownHall townHallTarget;
 
     float healthBarXLeft, healthBarXRight;
 
@@ -46,9 +54,22 @@ public class NPCCharacter : MonoBehaviour
     public bool IsRanged;
     public bool IsWorker;
 
+    bool mining;
+
+    bool carrying = false;
+    int carryingAmount;
+    ResourceType carringResourceType;
+
+    protected List<NPCCharacter> targetedBy = new List<NPCCharacter>();
+
+    public int TargetedByAmount => targetedBy.Count;
+
+    bool attacking;
+    float attackTimer = 0;
+
     public void Damage(float damage, NPCCharacter source, CharacterTeam sourceTeam)
     {
-        if(sourceTeam != GetComponent<TeamSelector>().CharacterTeam)
+        if (sourceTeam != GetComponent<TeamSelector>().CharacterTeam)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, _targetDetectRange);
             List<NPCCharacter> possibleTargets = new List<NPCCharacter>();
@@ -88,7 +109,7 @@ public class NPCCharacter : MonoBehaviour
         DOTween.To(
                 () => HealthBar.End.x,
                 value => HealthBar.End = new Vector3(value, HealthBar.End.y, HealthBar.End.z),
-                healthBarXLeft + (Health / MaxHealth)/2,
+                healthBarXLeft + (Health / MaxHealth) / 2,
                 0.2f
                 ).OnComplete(() =>
                 {
@@ -98,13 +119,6 @@ public class NPCCharacter : MonoBehaviour
                     }
                 });
     }
-
-    protected List<NPCCharacter> targetedBy = new List<NPCCharacter>();
-
-    public int TargetedByAmount => targetedBy.Count;
-
-    bool attacking;
-    float attackTimer = 0;
 
     // Use this for initialization
     void Start()
@@ -127,11 +141,80 @@ public class NPCCharacter : MonoBehaviour
         {
             _sprite.sprite = _workerSpriteIdle;
         }
+
+        agent.avoidancePriority = UnityEngine.Random.Range(0, 1000);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (IsWorker)
+        {
+            if (resourceTarget)
+            {
+                if (carrying)
+                {
+                    if (AtTownHallDestination)
+                    {
+                        Debug.Log("Adding " + carryingAmount + " " + carringResourceType + "!");
+                        carrying = false;
+                        carryingAmount = 0;
+                        carringResourceType = ResourceType.None;
+                        _carryingSprite.sprite = null;
+                    }
+                }
+                else if (AtResourceDestination)
+                {
+                    if (!mining)
+                    {
+                        resourceGroupTarget = resourceTarget.Group;
+                        if (resourceTarget.MiceMiningAmount <= resourceTarget.Group.lowestMinerAmount)
+                        {
+                            resourceTarget.StartMine();
+                            mining = true;
+                            agent.destination = transform.position;
+                            StartCoroutine(CoroutineHelper.DelaySeconds(() => _sprite.sprite = _workerSpriteAttack, _mineTime - 0.2f));
+                            StartCoroutine(CoroutineHelper.DelaySeconds(() =>
+                              {
+                                  mining = false;
+                                  carryingAmount = resourceTarget.FinishMine(_mineStrength);
+                                  carringResourceType = resourceTarget.Type;
+                                  carrying = true;
+                                  TownHall closestHall = TownHall.FindClosest(transform.position);
+                                  townHallTarget = closestHall;
+                                  agent.destination = closestHall.transform.position;
+                                  _carryingSprite.sprite = resourceTarget.GetChunkSprite();
+                                  StartCoroutine(CoroutineHelper.DelaySeconds(() => _sprite.sprite = _workerSpriteIdle, 0.1f));
+                              }, _mineTime));
+                        }
+                        else
+                        {
+                            resourceTarget = resourceTarget.Group.RequestResource();
+                        }
+                    }
+                    else
+                    {
+                        if (resourceTarget == null)
+                        {
+                            StopAllCoroutines();
+                            resourceTarget = resourceGroupTarget.RequestResource();
+                            mining = false;
+                        }
+                    }
+                }
+                else if (!mining)
+                {
+                    if (resourceTarget == null || resourceTarget.MiceMiningAmount > resourceTarget.Group.lowestMinerAmount)
+                    {
+                        StopAllCoroutines();
+                        resourceTarget = resourceTarget.Group.RequestResource();
+                        mining = false;
+                    }
+                    agent.destination = resourceTarget.transform.position;
+                }
+            }
+        }
+
         if (attackTimer <= _attackCooldown)
         {
             attackTimer += Time.deltaTime;
@@ -198,7 +281,7 @@ public class NPCCharacter : MonoBehaviour
             _sprite.flipX = false;
         }
 
-        if(attackTimer >= _attackCooldown)
+        if (attackTimer >= _attackCooldown)
         {
             if (IsMelee)
             {
