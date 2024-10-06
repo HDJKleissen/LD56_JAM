@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class ResourceGroup : MonoBehaviour
 {
@@ -21,26 +22,19 @@ public class ResourceGroup : MonoBehaviour
 
     public Resource RequestResource()
     {
-        //List<Resource> lowestMiners = new List<Resource>();
-        //lowestMinerAmount = int.MaxValue;
+        if (resources.Count > 0)
+        {
+            return resources[UnityEngine.Random.Range(0, resources.Count)];
+        }
 
-        //for (int i = 0; i < resources.Count; i++)
-        //{
-        //    Resource res = resources[i];
-        //    if (!res) { continue; }
+        return null;
+    }
 
-        //    if(res.MiceMiningAmount == lowestMinerAmount)
-        //    {
-        //        lowestMiners.Add(res);
-        //    }
-        //    if(res.MiceMiningAmount < lowestMinerAmount)
-        //    {
-        //        i = 0;
-        //        lowestMiners.Clear();
-        //        lowestMinerAmount = res.MiceMiningAmount;
-        //    }
-        //}
-
-        return resources[Random.Range(0, resources.Count)];
+    internal void RemoveResource(Resource resource)
+    {
+        if (resources.Contains(resource))
+        {
+            resources.Remove(resource);
+        }
     }
 }

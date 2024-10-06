@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Shapes;
+using DG.Tweening;
 
 public class Resource : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class Resource : MonoBehaviour
     public int MiceMiningAmount;
     [SerializeField] private Sprite[] ChunkSprites = new Sprite[0];
 
+    [SerializeField] private Sprite[] CrystalSprites = new Sprite[3];
+    [SerializeField] private SpriteRenderer sprite;
+
+    [SerializeField] private Disc SelectionDisc;
     // Use this for initialization
     void Start()
     {
@@ -21,10 +26,36 @@ public class Resource : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Amount < StartingAmount * 0.33f && sprite.sprite != CrystalSprites[2])
+        {
+            sprite.sprite = CrystalSprites[2];
+        }
+        else if (Amount < StartingAmount * 0.66f && sprite.sprite != CrystalSprites[1])
+        {
+            sprite.sprite = CrystalSprites[1];
+        }
+        else if (sprite.sprite != CrystalSprites[0])
+        {
+            sprite.sprite = CrystalSprites[0];
+        }
         if (Amount <= 0)
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        Group.RemoveResource(this);
+    }
+
+    public void BlinkSelectionCircle()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Insert(0, DOTween.To(() => SelectionDisc.Color.a, value => SelectionDisc.Color = new Color(SelectionDisc.Color.r, SelectionDisc.Color.g, SelectionDisc.Color.b, value), 1, 0.2f));
+        seq.Insert(0.2f, DOTween.To(() => SelectionDisc.Color.a, value => SelectionDisc.Color = new Color(SelectionDisc.Color.r, SelectionDisc.Color.g, SelectionDisc.Color.b, value), 0, 0.2f));
+        
+        seq.Play();
     }
 
     public void StartMine()

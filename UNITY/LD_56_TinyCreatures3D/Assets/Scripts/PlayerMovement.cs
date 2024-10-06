@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Sprite idleSprite;
     [SerializeField] private Sprite callSprite;
-    [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private LayerMask _rightClickLayers;
     [SerializeField] private GameObject _rightClickIndicatorPrefab;
 
     private List<NPCMouseController> followingMice = new List<NPCMouseController>();
@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             Vector3 clickLocation;
-            if (Physics.Raycast(ray, out RaycastHit hitData, float.PositiveInfinity, _groundMask))
+            if (Physics.Raycast(ray, out RaycastHit hitData, float.PositiveInfinity, _rightClickLayers))
             {
                 clickLocation = hitData.point;
 
@@ -60,35 +60,52 @@ public class PlayerMovement : MonoBehaviour
                 clickIndicator.transform.position = clickLocation + new Vector3(0,0.1f,0);
 
                 Vector2[] locationInCircle = Sunflower(followingMice.Count);
-                //Vector3 avgMousePos = Vector3.zero;
 
-                //for (int i = 0; i < followingMice.Count; i++)
-                //{
-                //    NPCMouseController mouse = followingMice[i];
-                //    if (mouse == null)
-                //    {
-                //        continue;
-                //    }
-                //    avgMousePos += mouse.transform.position;
-                //}
-                //avgMousePos /= followingMice.Where(mouse => mouse != null).Count();
+                Resource resource = hitData.collider.GetComponent<Resource>();
 
-                for (int i = 0; i < followingMice.Count; i++)
+                if (resource)
                 {
-                    NPCMouseController mouse = followingMice[i];
-                    if (mouse == null)
+                    List<NPCMouseController> miceToRemove = new List<NPCMouseController>();
+                    for (int i = 0; i < followingMice.Count; i++)
                     {
-                        continue;
+                        NPCMouseController mouse = followingMice[i];
+                        if (mouse == null || !mouse.IsWorker)
+                        {
+                            continue;
+                        }
+                        
+                        Guid cmdGuid = Guid.NewGuid();
+                        mouse.SetSelected(false);
+                        mouse.LastCommandGuid = cmdGuid;
+                        mouse.SetResourceTarget(resource);
+                        resource.BlinkSelectionCircle();
+                        mouse.SetFollowTarget(null);
+                        miceToRemove.Add(mouse);
                     }
-                    //mouse.SetDestination(mouse.transform.position);
-                    Guid cmdGuid = Guid.NewGuid();
-                    mouse.SetSelected(false);
-                    mouse.LastCommandGuid = cmdGuid;
-                    mouse.SetDestination(clickLocation + new Vector3(locationInCircle[i].x, 0, locationInCircle[i].y) * Mathf.Clamp(followingMice.Count / (Mathf.PI * 1.75f), 1.25f, 2.5f));
-                    mouse.SetFollowTarget(null);
-                }
 
-                followingMice.Clear();
+                    foreach(NPCMouseController mouse in miceToRemove)
+                    {
+                        followingMice.Remove(mouse);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < followingMice.Count; i++)
+                    {
+                        NPCMouseController mouse = followingMice[i];
+                        if (mouse == null)
+                        {
+                            continue;
+                        }
+                        //mouse.SetDestination(mouse.transform.position);
+                        Guid cmdGuid = Guid.NewGuid();
+                        mouse.SetSelected(false);
+                        mouse.LastCommandGuid = cmdGuid;
+                        mouse.SetDestination(clickLocation + new Vector3(locationInCircle[i].x, 0, locationInCircle[i].y) * Mathf.Clamp(followingMice.Count / (Mathf.PI * 1.75f), 1.25f, 2.5f));
+                        mouse.SetFollowTarget(null);
+                    }
+                    followingMice.Clear();
+                }
             }
         }
     }

@@ -155,9 +155,15 @@ public class NPCCharacter : MonoBehaviour
             {
                 if (carrying)
                 {
+                    if (!townHallTarget)
+                    {
+                        TownHall closestHall = TownHall.FindClosest(transform.position);
+                        townHallTarget = closestHall;
+                        agent.destination = closestHall.transform.position;
+                    }
                     if (AtTownHallDestination)
                     {
-                        Debug.Log("Adding " + carryingAmount + " " + carringResourceType + "!");
+                        CrystalCollection.Add(carryingAmount);
                         carrying = false;
                         carryingAmount = 0;
                         carringResourceType = ResourceType.None;
@@ -217,7 +223,7 @@ public class NPCCharacter : MonoBehaviour
                         resourceTarget = resourceTarget.Group.RequestResource();
                         mining = false;
                     }
-                    float variance = 0.5f;
+                    float variance = 0f;
                     agent.destination = resourceTarget.transform.position + new Vector3(UnityEngine.Random.Range(-variance, variance), 0, UnityEngine.Random.Range(-variance, variance));
                 }
             }
@@ -350,5 +356,9 @@ public class NPCCharacter : MonoBehaviour
     public void SetAttackTarget(NPCCharacter target)
     {
         attackTarget = target;
+    }
+    internal void SetResourceTarget(Resource resource)
+    {
+        resourceTarget = resource;
     }
 }

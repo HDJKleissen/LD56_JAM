@@ -65,4 +65,5 @@ public class NPCMouseController : NPCCharacter
         Selected = selected;
         _selectedIndicator.enabled = selected;
     }
+
 }
