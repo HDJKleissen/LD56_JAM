@@ -82,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     //mouse.SetDestination(mouse.transform.position);
                     Guid cmdGuid = Guid.NewGuid();
+                    mouse.SetSelected(false);
                     mouse.LastCommandGuid = cmdGuid;
                     mouse.SetDestination(clickLocation + new Vector3(locationInCircle[i].x, 0, locationInCircle[i].y) * Mathf.Clamp(followingMice.Count / (Mathf.PI * 1.75f), 1.25f, 2.5f));
                     mouse.SetFollowTarget(null);

@@ -21,20 +21,26 @@ public class ResourceGroup : MonoBehaviour
 
     public Resource RequestResource()
     {
-        Resource lowestMiner = null;
-        lowestMinerAmount = int.MaxValue;
+        //List<Resource> lowestMiners = new List<Resource>();
+        //lowestMinerAmount = int.MaxValue;
 
-        foreach(Resource res in resources)
-        {
-            if (!res) { continue; }
+        //for (int i = 0; i < resources.Count; i++)
+        //{
+        //    Resource res = resources[i];
+        //    if (!res) { continue; }
 
-            if(res.MiceMiningAmount <= lowestMinerAmount)
-            {
-                lowestMiner = res;
-                lowestMinerAmount = res.MiceMiningAmount;
-            }
-        }
+        //    if(res.MiceMiningAmount == lowestMinerAmount)
+        //    {
+        //        lowestMiners.Add(res);
+        //    }
+        //    if(res.MiceMiningAmount < lowestMinerAmount)
+        //    {
+        //        i = 0;
+        //        lowestMiners.Clear();
+        //        lowestMinerAmount = res.MiceMiningAmount;
+        //    }
+        //}
 
-        return lowestMiner;
+        return resources[Random.Range(0, resources.Count)];
     }
 }

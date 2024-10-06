@@ -28,6 +28,7 @@ public class NPCCharacter : MonoBehaviour
     [SerializeField] protected SpriteRenderer _carryingSprite;
 
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private GameObject mineParticlesPrefab;
 
     [SerializeField] private Sprite _meleeSpriteIdle;
     [SerializeField] private Sprite _meleeSpriteAttack;
@@ -142,7 +143,7 @@ public class NPCCharacter : MonoBehaviour
             _sprite.sprite = _workerSpriteIdle;
         }
 
-        agent.avoidancePriority = UnityEngine.Random.Range(0, 1000);
+        //agent.avoidancePriority = UnityEngine.Random.Range(0, 1000);
     }
 
     // Update is called once per frame
@@ -161,6 +162,7 @@ public class NPCCharacter : MonoBehaviour
                         carryingAmount = 0;
                         carringResourceType = ResourceType.None;
                         _carryingSprite.sprite = null;
+                        resourceTarget = resourceTarget.Group.RequestResource();
                     }
                 }
                 else if (AtResourceDestination)
@@ -168,12 +170,16 @@ public class NPCCharacter : MonoBehaviour
                     if (!mining)
                     {
                         resourceGroupTarget = resourceTarget.Group;
-                        if (resourceTarget.MiceMiningAmount <= resourceTarget.Group.lowestMinerAmount)
+                        if (resourceTarget.MiceMiningAmount <= 1)
                         {
                             resourceTarget.StartMine();
                             mining = true;
                             agent.destination = transform.position;
-                            StartCoroutine(CoroutineHelper.DelaySeconds(() => _sprite.sprite = _workerSpriteAttack, _mineTime - 0.2f));
+                            StartCoroutine(CoroutineHelper.DelaySeconds(() => {
+                                _sprite.sprite = _workerSpriteAttack;
+                                GameObject particles = Instantiate(mineParticlesPrefab);
+                                particles.transform.position = (transform.position + resourceTarget.transform.position) / 2;
+                            }, _mineTime - 0.2f));
                             StartCoroutine(CoroutineHelper.DelaySeconds(() =>
                               {
                                   mining = false;
@@ -184,6 +190,7 @@ public class NPCCharacter : MonoBehaviour
                                   townHallTarget = closestHall;
                                   agent.destination = closestHall.transform.position;
                                   _carryingSprite.sprite = resourceTarget.GetChunkSprite();
+
                                   StartCoroutine(CoroutineHelper.DelaySeconds(() => _sprite.sprite = _workerSpriteIdle, 0.1f));
                               }, _mineTime));
                         }
@@ -204,13 +211,14 @@ public class NPCCharacter : MonoBehaviour
                 }
                 else if (!mining)
                 {
-                    if (resourceTarget == null || resourceTarget.MiceMiningAmount > resourceTarget.Group.lowestMinerAmount)
+                    if (resourceTarget == null || resourceTarget.MiceMiningAmount > 1)
                     {
                         StopAllCoroutines();
                         resourceTarget = resourceTarget.Group.RequestResource();
                         mining = false;
                     }
-                    agent.destination = resourceTarget.transform.position;
+                    float variance = 0.5f;
+                    agent.destination = resourceTarget.transform.position + new Vector3(UnityEngine.Random.Range(-variance, variance), 0, UnityEngine.Random.Range(-variance, variance));
                 }
             }
         }
@@ -251,6 +259,7 @@ public class NPCCharacter : MonoBehaviour
         else
         {
             attacking = false;
+            attackTimer = 0;
             ChooseAttackTarget();
         }
 
@@ -259,11 +268,11 @@ public class NPCCharacter : MonoBehaviour
             return;
         }
 
-        if (agent.velocity.x < 0)
+        if (agent.velocity.x < 0.5f)
         {
             _sprite.flipX = true;
         }
-        else if (agent.velocity.x > 0)
+        else if (agent.velocity.x > 0.5f)
         {
             _sprite.flipX = false;
         }

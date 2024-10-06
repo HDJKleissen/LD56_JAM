@@ -88,13 +88,6 @@ public class SelectionCircle : MonoBehaviour
 
     private void ClearMouseList()
     {
-        foreach (NPCMouseController mouse in selectedMice)
-        {
-            if (mouse)
-            {
-                mouse.SetSelected(false);
-            }
-        }
         selectedMice.Clear();
     }
 

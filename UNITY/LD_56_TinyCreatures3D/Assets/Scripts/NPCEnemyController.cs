@@ -10,9 +10,8 @@ public class NPCEnemyController : NPCCharacter
     {
         Debug.Log($"Bing bong {name}?");
         NPCEnemyController enemy = collider.GetComponent<NPCEnemyController>();
-        if (enemy && enemy.AtDestination && enemy.Destination == agent.destination)
+        if (enemy && enemy.AtDestination && Vector3.Distance(enemy.Destination, agent.destination) < 0.3f)
         {
-            Debug.Log("Bing bong " + name);
             agent.destination = transform.position;
         }
     }

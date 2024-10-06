@@ -1,3 +1,4 @@
+using Shapes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using UnityEngine.AI;
 
 public class NPCMouseController : NPCCharacter
 {
-    [SerializeField] SpriteRenderer _selectedIndicator;
+    [SerializeField] Disc _selectedIndicator;
 
     public bool Selected { get; private set; }
 
@@ -55,7 +56,6 @@ public class NPCMouseController : NPCCharacter
         NPCMouseController mouse = collider.GetComponent<NPCMouseController>();
         if (mouse && mouse.AtDestination && LastCommandGuid == mouse.LastCommandGuid)
         {
-            Debug.Log("Bing bong " + name);
             agent.destination = transform.position;
         }
     }

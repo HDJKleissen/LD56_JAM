@@ -198,6 +198,12 @@ PrefabInstance:
       propertyPath: _carryingSprite
       value: 
       objectReference: {fileID: 1077095133875899908}
+    - target: {fileID: 8289910691476799322, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
+        type: 3}
+      propertyPath: mineParticlesPrefab
+      value: 
+      objectReference: {fileID: 8297606439115855370, guid: 2cb8f3d5934cf7741891f57135fcf392,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
