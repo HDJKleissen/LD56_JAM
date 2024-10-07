@@ -40,11 +40,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            Sprite.sprite = callSprite;
+            if (Time.timeScale > 0)
+            {
+                Sprite.sprite = callSprite;
+            }
         }
         else
         {
-            Sprite.sprite = idleSprite;
+            if (Time.timeScale > 0)
+            {
+                Sprite.sprite = idleSprite;
+            }
         }
 
         if (Input.GetMouseButtonUp(1))

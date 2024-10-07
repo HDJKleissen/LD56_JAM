@@ -51,7 +51,7 @@ MonoBehaviour:
   color: {r: 0.11405122, g: 1, b: 0, a: 0}
   detailLevel: 2
   renderQueue: -1
-  zTest: 4
+  zTest: 8
   zOffsetFactor: 0
   zOffsetUnits: 0
   colorMask: 15
@@ -112,7 +112,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d72c5e047d4188246887ffb9389e25a7, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
