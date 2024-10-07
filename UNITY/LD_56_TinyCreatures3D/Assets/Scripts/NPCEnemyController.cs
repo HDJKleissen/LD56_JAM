@@ -8,7 +8,6 @@ public class NPCEnemyController : NPCCharacter
 {
     private void OnTriggerStay(Collider collider)
     {
-        Debug.Log($"Bing bong {name}?");
         NPCEnemyController enemy = collider.GetComponent<NPCEnemyController>();
         if (enemy && enemy.AtDestination && Vector3.Distance(enemy.Destination, agent.destination) < 0.3f)
         {

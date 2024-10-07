@@ -22,10 +22,11 @@ public class NPCMouseController : NPCCharacter
         }
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _targetDetectRange);
         List<NPCCharacter> possibleTargets = new List<NPCCharacter>();
-        NPCEnemyController closest = null;
+        NPCCharacter closest = null;
         foreach (Collider hitCollider in hitColliders)
         {
             NPCEnemyController enemy = hitCollider.GetComponentInChildren<NPCEnemyController>();
+            BossController boss = hitCollider.GetComponentInChildren<BossController>();
             if (enemy)
             {
                 if (!closest)
@@ -40,6 +41,22 @@ public class NPCMouseController : NPCCharacter
                     }
                 }
                 possibleTargets.Add(enemy);
+            }
+            if (boss)
+            {
+                if (!closest)
+                {
+                    closest = boss;
+                }
+                else
+                {
+                    if (Vector3.Distance(transform.position, boss.transform.position) < Vector3.Distance(transform.position, closest.transform.position))
+                    {
+                        closest = boss;
+                    }
+                }
+                possibleTargets.Add(boss);
+
             }
         }
 

@@ -10,7 +10,7 @@ public class NPCCharacter : MonoBehaviour
 {
     [SerializeField] protected float MaxHealth;
     [SerializeField] protected float Health;
-    [SerializeField] private Line HealthBar;
+    [SerializeField] protected Line HealthBar;
 
     [SerializeField] protected float _attackRange;
     [SerializeField] protected float _attackMeleeMaxRange;
@@ -49,7 +49,7 @@ public class NPCCharacter : MonoBehaviour
     protected ResourceGroup resourceGroupTarget;
     protected TownHall townHallTarget;
 
-    float healthBarXLeft, healthBarXRight;
+    protected float healthBarXLeft, healthBarXRight;
 
     public bool IsMelee;
     public bool IsRanged;
@@ -66,7 +66,7 @@ public class NPCCharacter : MonoBehaviour
     public int TargetedByAmount => targetedBy.Count;
 
     bool attacking;
-    float attackTimer = 0;
+    protected float attackTimer = 0;
 
     public void Damage(float damage, NPCCharacter source, CharacterTeam sourceTeam)
     {
@@ -106,19 +106,12 @@ public class NPCCharacter : MonoBehaviour
 
         HealthBar.enabled = true;
         Health -= damage;
+        HealthBar.End = new Vector3(Mathf.Clamp(healthBarXLeft + (Health / MaxHealth) / 2, healthBarXLeft, healthBarXRight), HealthBar.End.y, HealthBar.End.z);
 
-        DOTween.To(
-                () => HealthBar.End.x,
-                value => HealthBar.End = new Vector3(Mathf.Clamp(value, 0, healthBarXRight), HealthBar.End.y, HealthBar.End.z),
-                healthBarXLeft + (Health / MaxHealth) / 2,
-                0.2f
-                ).OnComplete(() =>
-                {
-                    if (Health <= 0)
-                    {
-                        Destroy(gameObject);
-                    }
-                });
+        if (Health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Use this for initialization
@@ -181,24 +174,35 @@ public class NPCCharacter : MonoBehaviour
                             resourceTarget.StartMine();
                             mining = true;
                             agent.destination = transform.position;
-                            StartCoroutine(CoroutineHelper.DelaySeconds(() => {
+                            StartCoroutine(CoroutineHelper.DelaySeconds(() =>
+                            {
+                                if (resourceTarget == null)
+                                {
+                                    resourceTarget = resourceGroupTarget.RequestResource();
+                                    return;
+                                }
                                 _sprite.sprite = _workerSpriteAttack;
                                 GameObject particles = Instantiate(mineParticlesPrefab);
                                 particles.transform.position = (transform.position + resourceTarget.transform.position) / 2;
                             }, _mineTime - 0.2f));
                             StartCoroutine(CoroutineHelper.DelaySeconds(() =>
-                              {
-                                  mining = false;
-                                  carryingAmount = resourceTarget.FinishMine(_mineStrength);
-                                  carringResourceType = resourceTarget.Type;
-                                  carrying = true;
-                                  TownHall closestHall = TownHall.FindClosest(transform.position);
-                                  townHallTarget = closestHall;
-                                  agent.destination = closestHall.transform.position;
-                                  _carryingSprite.sprite = resourceTarget.GetChunkSprite();
+                            {
+                                if (resourceTarget == null)
+                                {
+                                    resourceTarget = resourceGroupTarget.RequestResource();
+                                    return;
+                                }
+                                mining = false;
+                                carryingAmount = resourceTarget.FinishMine(_mineStrength);
+                                carringResourceType = resourceTarget.Type;
+                                carrying = true;
+                                TownHall closestHall = TownHall.FindClosest(transform.position);
+                                townHallTarget = closestHall;
+                                agent.destination = closestHall.transform.position;
+                                _carryingSprite.sprite = resourceTarget.GetChunkSprite();
 
-                                  StartCoroutine(CoroutineHelper.DelaySeconds(() => _sprite.sprite = _workerSpriteIdle, 0.1f));
-                              }, _mineTime));
+                                StartCoroutine(CoroutineHelper.DelaySeconds(() => _sprite.sprite = _workerSpriteIdle, 0.1f));
+                            }, _mineTime));
                         }
                         else
                         {
@@ -225,6 +229,24 @@ public class NPCCharacter : MonoBehaviour
                     }
                     float variance = 0f;
                     agent.destination = resourceTarget.transform.position + new Vector3(UnityEngine.Random.Range(-variance, variance), 0, UnityEngine.Random.Range(-variance, variance));
+                }
+            }
+            else if (carrying)
+            {
+                if (!townHallTarget)
+                {
+                    TownHall closestHall = TownHall.FindClosest(transform.position);
+                    townHallTarget = closestHall;
+                    agent.destination = closestHall.transform.position;
+                }
+                if (AtTownHallDestination)
+                {
+                    CrystalCollection.Add(carryingAmount);
+                    carrying = false;
+                    carryingAmount = 0;
+                    carringResourceType = ResourceType.None;
+                    _carryingSprite.sprite = null;
+                    resourceTarget = resourceTarget.Group.RequestResource();
                 }
             }
         }
@@ -319,7 +341,7 @@ public class NPCCharacter : MonoBehaviour
                 projectile.Target = attackTarget.transform;
                 projectile.Damage = _attackDamage;
                 projectile.source = this;
-
+                projectile.targetingBoss = attackTarget.GetComponent<BossController>() != null;
                 transform.DOPunchRotation(new Vector3(0, 0, _throwRotateIntensity * targetDir), _throwRotateDuration, 0, 0.6f);
             }
             StartCoroutine(CoroutineHelper.DelaySeconds(() =>

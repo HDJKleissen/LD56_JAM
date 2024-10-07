@@ -74,9 +74,34 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  bossHeightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 24.578974
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.023823313
+    - serializedVersion: 3
+      time: 1.017657
+      value: 0.7802775
+      inSlope: -0.32759944
+      outSlope: -0.32759944
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.8252324
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   Height: 4
-  initialDistance: 0
   Damage: 1
+  source: {fileID: 0}
+  targetingBoss: 0
 --- !u!136 &7700836356628725679
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -140,7 +165,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectileSprite: {fileID: 6418475770794422194}
-  body: {fileID: 6450035924281861011}
 --- !u!1 &5906973394048957713
 GameObject:
   m_ObjectHideFlags: 0

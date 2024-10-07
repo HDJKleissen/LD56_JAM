@@ -19,7 +19,7 @@ public class ProjectileRotate : MonoBehaviour
     {
         Vector3 moveDirection = (previousPosition - transform.position).normalized;
         float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle + 65, Vector3.forward);
+        transform.rotation = Quaternion.AngleAxis(angle + 75, Vector3.forward);
         previousPosition = transform.position;
     }
 }

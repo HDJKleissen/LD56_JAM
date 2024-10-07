@@ -78,6 +78,16 @@ PrefabInstance:
       propertyPath: _attackRange
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8289910691476799322, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
+        type: 3}
+      propertyPath: _attackDamage
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289910691476799322, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
+        type: 3}
+      propertyPath: _attackCooldown
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

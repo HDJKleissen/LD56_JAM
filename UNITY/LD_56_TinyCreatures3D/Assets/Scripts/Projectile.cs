@@ -7,22 +7,24 @@ public class Projectile : MonoBehaviour
     public Transform Target;
     public float Speed;
     public AnimationCurve heightCurve;
+    public AnimationCurve bossHeightCurve;
     public float Height;
-    public float initialDistance;
     Tweener tweener;
     public float Damage;
     public NPCCharacter source;
     CharacterTeam CharacterTeam;
+    public bool targetingBoss;
+
     // Use this for initialization
     void Start()
     {
         CharacterTeam = source.GetComponent<TeamSelector>().CharacterTeam;
-        initialDistance = Vector3.Distance(transform.position, Target.position);
+
+        Debug.Log(targetingBoss);
+        AnimationCurve curve = targetingBoss ? bossHeightCurve : heightCurve;
 
         tweener = transform.DOMove(Target.position, Speed).SetSpeedBased(true);
-        tweener.OnUpdate(() => transform.position = new Vector3(transform.position.x, heightCurve.Evaluate(tweener.ElapsedPercentage()) * Height, transform.position.z));
-        tweener.OnComplete(() => Destroy(gameObject));
-        
+        tweener.OnUpdate(() => transform.position = new Vector3(transform.position.x, curve.Evaluate(tweener.ElapsedPercentage()) * Height, transform.position.z));
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -32,16 +34,22 @@ public class Projectile : MonoBehaviour
             return;
         }
         NPCCharacter npc = collider.gameObject.GetComponent<NPCCharacter>();
+        BossController boss = collider.gameObject.GetComponent<BossController>();
 
-        if (npc)
+        if (boss)
         {
-            if(npc.GetComponent<TeamSelector>().CharacterTeam != CharacterTeam)
+            boss.Damage(Damage, source, CharacterTeam);
+            Destroy(gameObject);
+        }
+        else if (npc)
+        {
+            if (npc.GetComponent<TeamSelector>().CharacterTeam != CharacterTeam)
             {
                 npc.Damage(Damage, source, CharacterTeam);
                 Destroy(gameObject);
             }
         }
-        else
+        else if (collider.gameObject.GetComponent<Projectile>() != null)
         {
             Destroy(gameObject);
         }
