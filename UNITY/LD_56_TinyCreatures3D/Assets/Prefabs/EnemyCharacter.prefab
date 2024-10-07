@@ -32,17 +32,17 @@ PrefabInstance:
     - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
         type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 0.49056602
       objectReference: {fileID: 0}
     - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
         type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 0.49056602
       objectReference: {fileID: 0}
     - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
         type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0.49056602
       objectReference: {fileID: 0}
     - target: {fileID: 2033214962054914979, guid: a65f7d277c87e454c8c5c53da6a19ff4,
         type: 3}
@@ -235,6 +235,7 @@ MonoBehaviour:
   _carryingSprite: {fileID: 0}
   projectilePrefab: {fileID: 1204828313419105331, guid: 43b8243f4cfbb3f4fb97c4b65b17c8b7,
     type: 3}
+  mineParticlesPrefab: {fileID: 0}
   _meleeSpriteIdle: {fileID: 1324015985, guid: 86e19c04ae018f14080c09de86f6e616, type: 3}
   _meleeSpriteAttack: {fileID: -59899263, guid: 86e19c04ae018f14080c09de86f6e616,
     type: 3}

@@ -127,6 +127,5 @@ public class SelectionCircle : MonoBehaviour
             radius += _growSpeed * Time.deltaTime;
         }
         _baseRing.Radius = radius;
-        transform.up = hit.normal;
     }
 }
