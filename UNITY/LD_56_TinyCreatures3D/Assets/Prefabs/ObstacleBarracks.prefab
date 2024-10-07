@@ -711,7 +711,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: E
+  m_text: Q
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -878,14 +878,14 @@ MonoBehaviour:
   queueText: {fileID: 9214063921587101489}
   progressImage: {fileID: 3212204538079132910}
   progressMaxHeight: 16.2
-  unit: {fileID: 6252004226272465137, guid: f45130e8de62b2b40907c6febca3a8ee, type: 3}
+  unit: {fileID: 6252004226272465137, guid: 6f4589f8fae9d9241a03fc4f86d3255f, type: 3}
   cost: 50
   buildTime: 4
   queueAmount: 0
   queueProgress: 0
   building: 0
   creator: {fileID: 7421413402324694070}
-  shopKey: 101
+  shopKey: 113
 --- !u!1 &5361519805850524905
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,14 +984,14 @@ MonoBehaviour:
   queueText: {fileID: 5375379858595032808}
   progressImage: {fileID: 2912781806546582838}
   progressMaxHeight: 16.2
-  unit: {fileID: 6252004226272465137, guid: 6f4589f8fae9d9241a03fc4f86d3255f, type: 3}
+  unit: {fileID: 6252004226272465137, guid: f45130e8de62b2b40907c6febca3a8ee, type: 3}
   cost: 50
   buildTime: 4
   queueAmount: 0
   queueProgress: 0
   building: 0
   creator: {fileID: 7421413402324694070}
-  shopKey: 113
+  shopKey: 101
 --- !u!1 &5616089870215876715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,7 +1342,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Q
+  m_text: E
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

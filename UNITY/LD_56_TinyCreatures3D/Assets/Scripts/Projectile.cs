@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour
         AnimationCurve curve = targetingBoss ? bossHeightCurve : heightCurve;
 
         tweener = transform.DOMove(Target.position, Speed).SetSpeedBased(true);
-        tweener.OnUpdate(() => transform.position = new Vector3(transform.position.x, curve.Evaluate(tweener.ElapsedPercentage()) * Height, transform.position.z));
+        tweener.OnUpdate(() => transform.position = new Vector3(transform.position.x, source.transform.position.y + curve.Evaluate(tweener.ElapsedPercentage()) * Height, transform.position.z));
     }
 
     private void OnTriggerEnter(Collider collider)

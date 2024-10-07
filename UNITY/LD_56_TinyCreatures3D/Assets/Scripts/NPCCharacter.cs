@@ -54,6 +54,7 @@ public class NPCCharacter : MonoBehaviour
     public bool IsMelee;
     public bool IsRanged;
     public bool IsWorker;
+    public bool DontAutoMine;
 
     bool mining;
 
@@ -123,6 +124,16 @@ public class NPCCharacter : MonoBehaviour
         healthBarXRight = HealthBar.End.x;
         HealthBar.enabled = false;
 
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 10.0f, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;
+        }
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.Move(new Vector3(UnityEngine.Random.Range(-0.2f, 0.2f), 0f, UnityEngine.Random.Range(-0.2f, 0.2f)));
+        }
         if (IsMelee)
         {
             _sprite.sprite = _meleeSpriteIdle;
@@ -134,8 +145,29 @@ public class NPCCharacter : MonoBehaviour
         if (IsWorker)
         {
             _sprite.sprite = _workerSpriteIdle;
+            //if (!DontAutoMine)
+            //{
+            //    StartCoroutine(CoroutineHelper.DelaySeconds(() =>
+            //  {
+            //      ResourceGroup[] groups = FindObjectsByType<ResourceGroup>(FindObjectsSortMode.None);
+            //      ResourceGroup closest = null;
+            //      float closestDistance = float.MaxValue;
+            //      for (int i = 0; i < groups.Length; i++)
+            //      {
+            //          float distance = Vector3.Distance(transform.position, groups[i].transform.position);
+            //          if (distance < closestDistance)
+            //          {
+            //              closestDistance = distance;
+            //              closest = groups[i];
+            //          }
+            //      }
+            //      if (closest != null)
+            //      {
+            //          SetResourceTarget(closest.RequestResource());
+            //      }
+            //  }, 0.2f));
+            //}
         }
-
         //agent.avoidancePriority = UnityEngine.Random.Range(0, 1000);
     }
 

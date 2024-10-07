@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class MenuUI : MonoBehaviour
 {
     public GameObject PauseMenu;
+    public GameObject VictoryMenu;
+    public BossController boss;
+    public bool checkForBoss;
 
     public void SetPaused(bool pause)
     {
@@ -29,11 +32,26 @@ public class MenuUI : MonoBehaviour
         {
             SetPaused(!PauseMenu.activeInHierarchy);
         }
+
+        if (checkForBoss)
+        {
+            if(boss == null)
+            {
+                Time.timeScale = 1;
+                VictoryMenu.SetActive(true);
+            }
+        }
     }
 
     public void LoadScene(string name)
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(name);
+    }
+
+    public void PlayClickSound()
+    {
+
     }
 
     public void QuitGame()
@@ -43,7 +61,7 @@ public class MenuUI : MonoBehaviour
         // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-            GameManager.Instance.QuitGame();
+        Application.Quit();
 #endif
     }
 }

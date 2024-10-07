@@ -15,6 +15,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 406172253526335628, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
         type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 406172253526335628, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 406172253526335628, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -87,6 +97,11 @@ PrefabInstance:
     - target: {fileID: 8289910691476799322, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
         type: 3}
       propertyPath: _attackDamage
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289910691476799322, guid: 6c6f3b4c5a0b9f74f8bb7c36ed22c897,
+        type: 3}
+      propertyPath: _attackMeleeMaxRange
       value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []

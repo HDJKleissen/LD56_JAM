@@ -61,6 +61,5 @@ public class ShopItem : MonoBehaviour
     {
         GameObject u = Instantiate(unit);
         u.transform.position = spawnPos;
-        u.GetComponent<NPCCharacter>().SetDestination(u.transform.position);
     }
 }

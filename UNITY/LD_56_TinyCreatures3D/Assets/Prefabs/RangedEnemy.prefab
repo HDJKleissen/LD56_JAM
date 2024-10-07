@@ -23,6 +23,11 @@ PrefabInstance:
       propertyPath: _attackRange
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4067375130570308383, guid: 8a03749e248471346b6eb2640b828b41,
+        type: 3}
+      propertyPath: _attackMeleeMaxRange
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4170493083791424988, guid: 8a03749e248471346b6eb2640b828b41,
         type: 3}
       propertyPath: m_LocalScale.x
