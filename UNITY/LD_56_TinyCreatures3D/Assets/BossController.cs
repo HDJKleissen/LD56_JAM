@@ -41,7 +41,19 @@ public class BossController : NPCCharacter
     {
         _sprite.transform.DOLocalMoveY(3, .8f).SetEase(Ease.OutQuad).OnComplete(
             () => _sprite.transform.DOLocalMoveY(0, .4f).SetEase(Ease.InQuad).OnComplete(
-                () => Debug.Log("Poof"))
+                () =>
+                {
+                    Collider[] hitColliders = Physics.OverlapSphere(transform.position, _attackRange / 3);
+
+                    foreach (Collider hitCollider in hitColliders)
+                    {
+                        NPCCharacter character = hitCollider.GetComponentInChildren<NPCCharacter>();
+                        if (character && character.GetComponent<BossController>() == null)
+                        {
+                            character.Damage(4, this, CharacterTeam.ENEMY);
+                        }
+                    }
+                })
             );
     }
 
