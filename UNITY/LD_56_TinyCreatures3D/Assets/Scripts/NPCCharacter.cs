@@ -45,9 +45,9 @@ public class NPCCharacter : MonoBehaviour
 
     protected Transform followTarget;
     public NPCCharacter attackTarget;
-    [SerializeField] private Resource resourceTarget;
-    private ResourceGroup resourceGroupTarget;
-    private TownHall townHallTarget;
+    [SerializeField] protected Resource resourceTarget;
+    protected ResourceGroup resourceGroupTarget;
+    protected TownHall townHallTarget;
 
     float healthBarXLeft, healthBarXRight;
 
@@ -355,10 +355,19 @@ public class NPCCharacter : MonoBehaviour
     }
     public void SetAttackTarget(NPCCharacter target)
     {
+        followTarget = null;
         attackTarget = target;
     }
     internal void SetResourceTarget(Resource resource)
     {
+        if (!IsWorker)
+        {
+            return;
+        }
+        followTarget = null;
+        attackTarget = null;
         resourceTarget = resource;
+        resourceGroupTarget = resource.Group;
+        townHallTarget = null;
     }
 }

@@ -19,7 +19,7 @@ public class CrystalCollection : MonoBehaviour
 
     public static bool CanPay(int amount)
     {
-        return amount >= CrystalAmount;
+        return amount <= CrystalAmount;
     }
 
     public static void Pay(int amount)

@@ -35,8 +35,15 @@ public class Projectile : MonoBehaviour
 
         if (npc)
         {
-            npc.Damage(Damage, source, CharacterTeam);
+            if(npc.GetComponent<TeamSelector>().CharacterTeam != CharacterTeam)
+            {
+                npc.Damage(Damage, source, CharacterTeam);
+                Destroy(gameObject);
+            }
         }
-        Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

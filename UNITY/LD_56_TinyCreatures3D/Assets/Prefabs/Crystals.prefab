@@ -332,6 +332,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2814908467040106571}
   m_SourcePrefab: {fileID: 100100000, guid: f5555400968768947bce0f36619133ee, type: 3}
+--- !u!212 &233808928727479957 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4136314035828180174, guid: f5555400968768947bce0f36619133ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 4204537172153201243}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4587428801825882741 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 427937040850989102, guid: f5555400968768947bce0f36619133ee,
@@ -360,6 +366,11 @@ MonoBehaviour:
   - {fileID: 178143016, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
   - {fileID: 363117434, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
   - {fileID: 1331738598, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
+  CrystalSprites:
+  - {fileID: 421716854, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
+  - {fileID: -1000726354, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
+  - {fileID: 1760725395, guid: 2365871c03f541c44acd96551318b3ed, type: 3}
+  sprite: {fileID: 233808928727479957}
   SelectionDisc: {fileID: 2320333478396977712}
 --- !u!4 &6405408640350092814 stripped
 Transform:

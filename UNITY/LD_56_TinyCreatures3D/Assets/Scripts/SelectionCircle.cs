@@ -51,6 +51,15 @@ public class SelectionCircle : MonoBehaviour
             {
                 UpdateRings(hitData);
                 Collider[] hitColliders = Physics.OverlapSphere(_baseRing.transform.position, radius);
+                for (int i = 0; i < selectedMice.Count; i++)
+                {
+                    NPCMouseController mouse = selectedMice[i];
+                    if (mouse == null)
+                    {
+                        continue;
+                    }
+                    mouse.SetSelected(false);
+                }
                 ClearMouseList();
                 foreach (Collider hitCollider in hitColliders)
                 {

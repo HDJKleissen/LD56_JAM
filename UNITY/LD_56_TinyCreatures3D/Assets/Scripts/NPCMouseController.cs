@@ -16,6 +16,10 @@ public class NPCMouseController : NPCCharacter
 
     protected override void ChooseAttackTarget()
     {
+        if (followTarget || resourceTarget || resourceGroupTarget || townHallTarget)
+        {
+            return;
+        }
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _targetDetectRange);
         List<NPCCharacter> possibleTargets = new List<NPCCharacter>();
         NPCEnemyController closest = null;

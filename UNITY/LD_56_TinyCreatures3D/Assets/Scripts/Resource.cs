@@ -26,18 +26,28 @@ public class Resource : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Amount < StartingAmount * 0.33f && sprite.sprite != CrystalSprites[2])
+        if (Amount > StartingAmount * 0.66f)
         {
-            sprite.sprite = CrystalSprites[2];
+            if (sprite.sprite != CrystalSprites[0])
+            {
+                sprite.sprite = CrystalSprites[0];
+            }
         }
-        else if (Amount < StartingAmount * 0.66f && sprite.sprite != CrystalSprites[1])
+        else if (Amount > StartingAmount * 0.33f)
         {
-            sprite.sprite = CrystalSprites[1];
+            if (sprite.sprite != CrystalSprites[1])
+            {
+                sprite.sprite = CrystalSprites[1];
+            }
         }
-        else if (sprite.sprite != CrystalSprites[0])
+        else if (Amount <= StartingAmount * 0.33f)
         {
-            sprite.sprite = CrystalSprites[0];
+            if (sprite.sprite != CrystalSprites[2])
+            {
+                sprite.sprite = CrystalSprites[2];
+            }
         }
+
         if (Amount <= 0)
         {
             Destroy(gameObject);
