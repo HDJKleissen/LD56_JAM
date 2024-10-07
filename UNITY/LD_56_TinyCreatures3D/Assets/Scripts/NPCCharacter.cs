@@ -109,7 +109,7 @@ public class NPCCharacter : MonoBehaviour
 
         DOTween.To(
                 () => HealthBar.End.x,
-                value => HealthBar.End = new Vector3(value, HealthBar.End.y, HealthBar.End.z),
+                value => HealthBar.End = new Vector3(Mathf.Clamp(value, 0, healthBarXRight), HealthBar.End.y, HealthBar.End.z),
                 healthBarXLeft + (Health / MaxHealth) / 2,
                 0.2f
                 ).OnComplete(() =>

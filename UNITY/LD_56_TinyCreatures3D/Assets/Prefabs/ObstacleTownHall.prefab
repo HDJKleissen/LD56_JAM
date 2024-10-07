@@ -936,7 +936,7 @@ MonoBehaviour:
   queueAmount: 0
   queueProgress: 0
   building: 0
-  creator: {fileID: 0}
+  creator: {fileID: 1938725772813658151}
   shopKey: 113
 --- !u!1 &8919500451159333879
 GameObject:
